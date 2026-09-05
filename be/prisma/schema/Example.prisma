@@ -1,0 +1,16 @@
+model Example {
+    id             Int       @id @default(autoincrement())
+    input          String
+    output         String
+    explanation    String
+    problem        Problem   @relation("problemExample", fields: [problemId], references: [id])
+    problemId      Int       @map("problem_id")
+    createdByAdmin User      @relation("exampleCreation", fields: [createdBy], references: [id])
+    createdBy      Int       @map("created_by")
+    updatedByAdmin User?     @relation("exampleUpdate", fields: [updatedBy], references: [id])
+    updatedBy      Int?
+    createdAt      DateTime  @default(now()) @map("created_at")
+    updatedAt      DateTime? @updatedAt @map("updated_at")
+    deletedAt      DateTime? @map("deleted_at")
+    @@map("examples")
+}

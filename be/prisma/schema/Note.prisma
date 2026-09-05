@@ -1,0 +1,14 @@
+model Note {
+    id            Int        @id @default(autoincrement())
+    text          String     @db.Text
+    submission    Submission @relation("submissionNote", fields: [submissionId], references: [id])
+    submissionId  Int        @map("submission_id")
+    createdByUser User       @relation("noteCreation", fields: [createdBy], references: [id])
+    createdBy     Int        @map("created_by")
+    updatedByUser User?      @relation("noteUpdate", fields: [updatedBy], references: [id])
+    updatedBy     Int?       @map("updated_by")
+    createdAt     DateTime   @default(now()) @map("created_at")
+    updatedAt     DateTime?  @updatedAt @map("updated_at")
+
+    @@map("notes")
+}

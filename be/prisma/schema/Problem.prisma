@@ -1,0 +1,22 @@
+enum PROBLEM_LEVEL {
+    EASY   @map("easy")
+    MEDIUM @map("medium")
+    HARD   @map("hard")
+}
+
+model Problem {
+    id             Int           @id @default(autoincrement())
+    title          String
+    description    String        @db.Text
+    level          PROBLEM_LEVEL
+    createdByAdmin User          @relation("problemCreation", fields: [createdBy], references: [id])
+    createdBy      Int           @map("created_by")
+    updatedByAdmin User?         @relation("problemUpdate", fields: [updatedBy], references: [id])
+    updatedBy      Int?          @map("updated_by")
+    createdAt      DateTime      @default(now()) @map("created_at")
+    updatedAt      DateTime?     @updatedAt @map("updated_at")
+    deletedAt      DateTime?     @map("deleted_at")
+    examples       Example[]     @relation("problemExample")
+    submissions    Submission[]  @relation("problemSubmission")
+    @@map("problems")
+}

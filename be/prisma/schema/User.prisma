@@ -1,0 +1,48 @@
+enum USER_STATUS {
+    ACTIVE   @map("active")
+    INACTIVE @map("inactive")
+}
+
+model User {
+    id                     Int              @id @default(autoincrement())
+    name                   String
+    userName               String           @unique @map("user_name")
+    avatarUrl              String?          @map("avatar_url")
+    rank                   Int?
+    currentStreak          Int              @default(0) @map("current_streak")
+    maxStreak              Int              @default(0) @map("max_streak")
+    score                  Int              @default(0)
+    problemSolved          Int              @default(0) @map("problem_solved")
+    mobileNumber           String           @unique @map("mobile_number")
+    mobileNumberVerifiedAt DateTime?         @map("mobile_number_verified_at")
+    email                  String           @unique
+    emailVerifiedAt        DateTime?        @map("email_verified_at")
+    passwordHash           String           @map("password_hash")
+    country                String?
+    status                 USER_STATUS      @default(ACTIVE)
+    role                   UserRole[]       @relation("userRoles")
+    lastActive             DateTime         @map("last_active")
+    lastLoginAt            DateTime         @map("last_login")
+    createdAt              DateTime         @default(now()) @map("created_at")
+    updatedAt              DateTime?        @updatedAt @map("updated_at")
+    deletedAt              DateTime?        @map("deleted_at")
+    createdByAdmin         User?            @relation("adminCreation", fields: [createdBy], references: [id])
+    createdBy              Int?             @map("created_by")
+    createdAdmin           User[]           @relation("adminCreation")
+    updatedByAdmin         User?            @relation("adminUpdate", fields: [updatedBy], references: [id])
+    updatedBy              Int?             @map("updated_by")
+    updatedAdmin           User[]           @relation("adminUpdate")
+    createdRoles           UserRole[]       @relation("roleCreation")
+    updatedRoles           UserRole[]       @relation("roleUpdate")
+    createdPermission      UserPermission[] @relation("permissionCreation")
+    updatedPermission      UserPermission[] @relation("permissionUpdate")
+    createdProblems        Problem[]        @relation("problemCreation")
+    updatedProblems        Problem[]        @relation("problemUpdate")
+    createdExamples        Example[]        @relation("exampleCreation")
+    updatedExamples        Example[]        @relation("exampleUpdate")
+    createdNotes           Note[]           @relation("noteCreation")
+    updatedNotes           Note[]           @relation("noteUpdate")
+    submissions            Submission[]     @relation("submissionUser")
+
+    @@map("users")
+}

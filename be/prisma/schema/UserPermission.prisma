@@ -1,0 +1,18 @@
+model UserPermission {
+    id               Int              @id @default(autoincrement())
+    name             String           @unique
+    codeName         String           @unique @map("code_name")
+    parentPermission UserPermission?  @relation("permissionHierarchy", fields: [parentId], references: [id])
+    parentId         Int?             @map("parent_id")
+    childPermission  UserPermission[] @relation("permissionHierarchy")
+    createdByUser    User             @relation("permissionCreation", fields: [createdBy], references: [id])
+    createdBy        Int              @map("created_by")
+    updatedByUser    User?            @relation("permissionUpdate", fields: [updatedBy], references: [id])
+    updatedBy        Int?             @map("updated_by")
+    createdAt        DateTime         @default(now()) @map("created_at")
+    updatedAt        DateTime?        @updatedAt @map("updated_at")
+    deletedAt        DateTime?        @map("deleted_at")
+    userRole         UserRole[]
+
+    @@map("user_permissions")
+}

@@ -1,0 +1,22 @@
+enum USER_ROLE_STATUS {
+    ACTIVE   @map("active")
+    INACTIVE @map("inactive")
+}
+
+model UserRole {
+    id             Int              @id @default(autoincrement())
+    roleName       String           @unique @map("role_name")
+    description    String
+    status         USER_ROLE_STATUS @default(ACTIVE)
+    user           User[]           @relation("userRoles")
+    createdAt      DateTime         @default(now()) @map("created_at")
+    updatedAt      DateTime?        @updatedAt @map("updated_at")
+    deletedAt      DateTime?
+    createdByAdmin User             @relation("roleCreation", fields: [createdBy], references: [id])
+    createdBy      Int              @map("created_by")
+    updatedByAdmin User?            @relation("roleUpdate", fields: [updatedBy], references: [id])
+    updatedBy      Int?
+    userPermission UserPermission[]
+
+    @@map("user_roles")
+}

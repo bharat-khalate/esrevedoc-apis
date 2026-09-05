@@ -1,0 +1,16 @@
+{
+  "name": "esrevedoc",
+  "private": true,
+  "workspaces": [
+    "fe",
+    "be"
+  ],
+  "scripts": {
+    "dev:fe": "npm run dev --w fe",
+    "dev:be": "npm run dev --w be",
+    "dev": "npm run dev --workspaces"
+  },
+  "dependencies": {
+    "yup": "^1.7.1"
+  }
+}
