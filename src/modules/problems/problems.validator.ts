@@ -17,15 +17,15 @@ export const validateGetAllProblemsParams = (
   next: NextFunction,
 ) => {
   const query = req.query;
-  if (!isValidPagination(query)) {
-    res.sendResponse({
+  if (isValidPagination(query)) {
+    return res.sendResponse({
       statusCode: HTTP_CODE.BAD_REQUEST,
       messageCode: "INVALID_PAGE_OR_LIMIT",
       success: RESPONSE_STATUS.INVALID_DATA,
     });
   }
   if (query.search && typeof query.search != "boolean") {
-    res.sendResponse({
+    return res.sendResponse({
       statusCode: HTTP_CODE.BAD_REQUEST,
       messageCode: "INVALID_IS_SEARCH",
       success: RESPONSE_STATUS.INVALID_DATA,
@@ -35,7 +35,7 @@ export const validateGetAllProblemsParams = (
     query.search2 &&
     !isValidEnumValue(PROBLEM_LEVEL, query.search2 as string)
   ) {
-    res.sendResponse({
+    return res.sendResponse({
       statusCode: HTTP_CODE.BAD_REQUEST,
       messageCode: "INVALID_FIELD_DATA",
       success: RESPONSE_STATUS.INVALID_DATA,
@@ -44,7 +44,7 @@ export const validateGetAllProblemsParams = (
       },
     });
   }
-  next();
+  return next();
 };
 
 export const validateGetProblemDetailsParam = (
@@ -54,7 +54,7 @@ export const validateGetProblemDetailsParam = (
 ) => {
   const { problemId } = req.params;
   if (!problemId || isValidNumber(problemId)) {
-    res.sendResponse({
+    return res.sendResponse({
       statusCode: HTTP_CODE.BAD_REQUEST,
       messageCode: "INVALID_FIELD_DATA",
       success: RESPONSE_STATUS.INVALID_DATA,
@@ -63,5 +63,5 @@ export const validateGetProblemDetailsParam = (
       },
     });
   }
-  next();
+  return next();
 };

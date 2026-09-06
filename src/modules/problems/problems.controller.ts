@@ -33,14 +33,14 @@ const createProblemsController = (problemsService: TProblemsService) => {
         const response: IPaginatedResponse<IProblems> =
           await problemsService.getAllProblems(query, id);
         if (!response.result.length) {
-          res.sendResponse({
+          return res.sendResponse({
             success: RESPONSE_STATUS.SUCCESS,
             statusCode: HTTP_CODE.OK,
             messageCode: "NO_DATA_FOUND",
             data: response,
           });
         }
-        res.sendResponse({
+        return res.sendResponse({
           success: RESPONSE_STATUS.SUCCESS,
           statusCode: HTTP_CODE.OK,
           messageCode: "FIELDS_FETCHED_SUCCESSFULLY",
@@ -71,13 +71,13 @@ const createProblemsController = (problemsService: TProblemsService) => {
           userId,
         );
         if (!response) {
-          res.sendResponse({
+          return res.sendResponse({
             success: RESPONSE_STATUS.ERROR,
             statusCode: HTTP_CODE.BAD_REQUEST,
             messageCode: "NO_DATA_FOUND",
           });
         }
-        res.sendResponse({
+        return res.sendResponse({
           success: RESPONSE_STATUS.SUCCESS,
           statusCode: HTTP_CODE.OK,
           messageCode: "FIELDS_FETCHED_SUCCESSFULLY",

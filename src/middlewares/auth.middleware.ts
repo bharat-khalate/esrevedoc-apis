@@ -43,7 +43,7 @@ export const basicAuthMiddleware = async (
     ).toString();
     const [userName, password] = decodedCredentials.split(":");
     if (userName === BASIC_AUTH_USERNAME && password === BASIC_AUTH_PASSWORD) {
-      next();
+      return next();
     } else {
       return res.sendResponse({
         statusCode: HTTP_CODE.UNAUTHORIZED,
@@ -121,7 +121,7 @@ export const authMiddleware =
         }
         req.user = user;
         req.step = decodedPayload.nextStep;
-        next();
+        return next();
       } catch (err) {
         return res.sendResponse({
           success: RESPONSE_STATUS.AUTH_FAIL,
