@@ -1,0 +1,33 @@
+#BUILD STAGE
+FROM node:24-slim AS builder
+WORKDIR /app
+#Disabling husky
+ENV HUSKY=0
+#Copying package.json
+COPY package*.json ./
+# Installing dependencies
+RUN npm ci --ignore-scripts
+#Copying code base
+COPY tsconfig.json ./
+COPY prisma.config.ts ./
+COPY src ./src
+COPY prisma ./prisma
+#Generating prisma client
+RUN npx prisma generate
+#Generating build
+RUN npm run build
+
+#Prod
+FROM node:24-slim AS production
+
+WORKDIR /app
+ENV NODE_ENV=production
+ENV HUSKY=0
+COPY package*.json ./
+RUN npm ci --omit=dev --ignore-scripts
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/prisma.config.ts ./prisma.config.ts
+
+EXPOSE 5000
+CMD [ "node","dist/src/server.js" ]
