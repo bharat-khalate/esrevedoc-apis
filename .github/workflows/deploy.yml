@@ -30,7 +30,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            -t 601525366310.dkr.ecr.eu-north-1.amazonaws.com/esrevedoc-be:${{ github.sha }} .
+            --no-cache -f DockerFile -t 601525366310.dkr.ecr.eu-north-1.amazonaws.com/esrevedoc-be:${{ github.sha }} .
 
       - name: Push Docker image
         run: |
